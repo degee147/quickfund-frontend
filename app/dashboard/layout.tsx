@@ -1,7 +1,12 @@
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import { ReactNode } from 'react';
+import { fakeAuth } from '@/lib/auth';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
+    if (!fakeAuth.isAuthenticated) {
+        redirect('/login');
+    }
     return (
         <div className="flex min-h-screen">
             {/* Sidebar */}

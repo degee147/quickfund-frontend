@@ -1,6 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import FormCard from '@/components/ui/FormCard';
+import Input from '@/components/ui/Input';
+import Button from '@/components/ui/Button';
 
 export default function LoginPage() {
     const [form, setForm] = useState({ email: '', password: '' });
@@ -16,33 +19,28 @@ export default function LoginPage() {
     };
 
     return (
-        <div className="max-w-md mx-auto mt-12 p-6 bg-white rounded shadow">
-            <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">Welcome Back</h2>
+        <FormCard>
+            <h2 className="text-2xl font-bold mb-6 text-center text-blue-600">
+                Welcome Back
+            </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-                <input
+                <Input
                     name="email"
                     type="email"
                     placeholder="Email"
                     value={form.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border rounded"
                 />
-                <input
+                <Input
                     name="password"
                     type="password"
                     placeholder="Password"
                     value={form.password}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-2 border rounded"
                 />
-                <button
-                    type="submit"
-                    className="w-full py-2 bg-blue-600 text-white font-semibold rounded hover:bg-blue-700"
-                >
-                    Login
-                </button>
+                <Button type="submit">Login</Button>
             </form>
             <p className="text-center text-sm mt-4">
                 New user?{' '}
@@ -50,6 +48,6 @@ export default function LoginPage() {
                     Create an account
                 </a>
             </p>
-        </div>
+        </FormCard>
     );
 }

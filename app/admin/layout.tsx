@@ -1,7 +1,14 @@
 import Link from 'next/link';
 import { ReactNode } from 'react';
+import { redirect } from 'next/navigation';
+import { fakeAuth } from '@/lib/auth';
+
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
+    if (!fakeAuth.isAuthenticated) {
+        redirect('/login');
+    }
+
     return (
         <div className="flex min-h-screen">
             <aside className="w-64 bg-gray-900 text-white p-6 space-y-4">
