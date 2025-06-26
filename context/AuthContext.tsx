@@ -17,6 +17,7 @@ interface AuthContextProps {
     register: (data: { name: string; email: string; password: string }) => Promise<void>;
     logout: () => void;
     loading: boolean;
+    isLoggedIn: boolean;
 }
 
 // ✅ Expected shape of the Laravel /login and /register response
@@ -24,8 +25,7 @@ interface AuthResponse {
     token: string;
     user: User;
 }
-
-const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
+export const AuthContext = createContext<AuthContextProps>({} as AuthContextProps);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -51,14 +51,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
 
     const register = async (data: { name: string; email: string; password: string }) => {
-        const url = '/register';
-        // console.log('[Register URL]', `${API.defaults.baseURL}${url}`);
-
-        const res = await API.post<AuthResponse>(url, {
+        const res = await API.post<AuthResponse>('/register', {
             ...data,
-            password_confirmation: data.password, // 👈 Add this line
+            password_confirmation: data.password,
         });
-        console.log('res', res)
         const { token, user } = res.data;
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(user));
@@ -73,8 +69,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         router.push('/login');
     };
 
+    const isLoggedIn = !!user;
+
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, register, logout, loading, isLoggedIn }}>
             {children}
         </AuthContext.Provider>
     );
