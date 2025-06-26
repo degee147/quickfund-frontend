@@ -31,8 +31,8 @@ function LayoutHeader() {
         <h1 className="text-xl font-bold text-blue-600">QuickFund</h1>
         <nav className="space-x-4">
           <Link href="/" className="text-sm text-gray-700 hover:text-blue-500">Home</Link>
-          <Link href="/about" className="text-sm text-gray-700 hover:text-blue-500">About</Link>
-          <Link href="/faqs" className="text-sm text-gray-700 hover:text-blue-500">FAQs</Link>
+          {/* <Link href="/about" className="text-sm text-gray-700 hover:text-blue-500">About</Link> */}
+          {/* <Link href="/faqs" className="text-sm text-gray-700 hover:text-blue-500">FAQs</Link> */}
 
           {isLoggedIn ? (
             <>
