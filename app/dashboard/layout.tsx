@@ -41,7 +41,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
                 <div className="border-b border-blue-600 pb-4">
                     <p className="text-sm opacity-75">Welcome,</p>
                     <p className="font-semibold">{user?.name}</p>
-                    {/* <p className="font-semibold">{user?.id}</p> */}
+                    <p className="font-semibold">{user?.email}</p>
                     <p className="text-xs opacity-60 capitalize">{user?.role}</p>
                 </div>
 
