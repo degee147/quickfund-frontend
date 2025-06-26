@@ -35,7 +35,7 @@ export default function ApplyPage() {
             const res = await API.post('/loans', payload);
 
             alert('Loan application submitted successfully!');
-            router.push('/dashboard'); // or a loan summary page
+            router.push('/dashboard/history'); // or a loan summary page
         } catch (error: any) {
             console.error('Loan application failed:', error);
             alert(error.response?.data?.message || 'Something went wrong');
