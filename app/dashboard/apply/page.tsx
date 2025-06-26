@@ -4,6 +4,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/context/AuthContext';
 import API from '@/lib/axios';
+import { APIErrorResponse } from '@/lib/axios';
+
+
 
 export default function ApplyPage() {
     const [form, setForm] = useState({ amount: '', purpose: '', duration: '' });
@@ -32,13 +35,14 @@ export default function ApplyPage() {
                 duration: Number(form.duration),
             };
 
-            const res = await API.post('/loans', payload);
+            await API.post('/loans', payload);
 
             alert('Loan application submitted successfully!');
             router.push('/dashboard/history'); // or a loan summary page
-        } catch (error: any) {
+        } catch (error) {
             console.error('Loan application failed:', error);
-            alert(error.response?.data?.message || 'Something went wrong');
+            const err = error as APIErrorResponse;
+            alert(err.response?.data?.message || 'Something went wrong');
         } finally {
             setLoading(false);
         }

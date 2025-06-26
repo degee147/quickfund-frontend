@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import API from '@/lib/axios';
-import { useAuth } from '@/context/AuthContext';
 
 interface Loan {
     id: number;
@@ -23,13 +22,13 @@ interface LoanTableProps {
 const LoanTable = ({ isAdminView = false }: LoanTableProps) => {
     const [loans, setLoans] = useState<Loan[]>([]);
     const [loading, setLoading] = useState(true);
-    const { user } = useAuth();
+    // const { user } = useAuth();
 
     useEffect(() => {
         const fetchLoans = async () => {
             try {
                 const res = await API.get('/loans');
-                setLoans(res.data);
+                setLoans(res.data as Loan[]);
             } catch (error) {
                 console.error('Error fetching loans', error);
             } finally {

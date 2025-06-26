@@ -1,5 +1,5 @@
 
-import LoanTable from '@/components/ui/LoanTable'; // Adjust path as needed
+import LoanTable from '@/components/ui/LoanTable';
 
 
 export default function HistoryPage() {

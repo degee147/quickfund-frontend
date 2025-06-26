@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import FormCard from '@/components/ui/FormCard';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
+import { APIErrorResponse } from '@/lib/axios';
 import { useAuth } from '@/context/AuthContext';
 
 const loginSchema = z.object({
@@ -29,9 +30,10 @@ export default function LoginPage() {
     const onSubmit = async (data: LoginForm) => {
         try {
             await login(data); // delegates to AuthContext
-        } catch (error: any) {
+        } catch (error) {
             console.error('Login failed:', error);
-            alert(error?.response?.data?.message || 'Login failed. Please try again.');
+            const err = error as APIErrorResponse;
+            alert(err.response?.data?.message || 'Login failed. Please try again.');
         }
     };
 

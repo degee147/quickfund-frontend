@@ -16,6 +16,17 @@ const API = axios.create({
     // },
 });
 
+export type APIErrorResponse = {
+    response?: {
+        data?: {
+            message?: string;
+            [key: string]: unknown;
+        };
+        status?: number;
+        [key: string]: unknown;
+    };
+    [key: string]: unknown;
+};
 
 
 let setLoadingFn: (val: boolean) => void;

@@ -1,6 +1,5 @@
 'use client';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
@@ -28,8 +27,8 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
     if (!isLoggedIn) {
         return null;
     }
-    console.log("user id", user.id);
-    console.log("user role", user.role);
+    // console.log("user id", user.id);
+    // console.log("user role", user.role);
 
     return (
 

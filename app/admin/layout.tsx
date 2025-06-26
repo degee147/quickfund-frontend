@@ -1,13 +1,22 @@
+'use client';
 import Link from 'next/link';
-import { ReactNode } from 'react';
-import { redirect } from 'next/navigation';
-import { fakeAuth } from '@/lib/auth';
+import { ReactNode, useEffect } from 'react';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
-    if (!fakeAuth.isAuthenticated) {
-        redirect('/login');
-    }
+    const { user, loading, isLoggedIn } = useAuth();
+    const router = useRouter();
+
+    useEffect(() => {
+        if (!loading && !isLoggedIn) {
+            router.push('/login');
+        }
+        if (user?.role !== "admin") {
+            router.push('/login');
+        }
+    }, [loading, isLoggedIn, router, user]);
 
     return (
         <div className="flex min-h-screen">

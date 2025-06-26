@@ -1,8 +1,5 @@
 'use client'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-// import type { Metadata } from 'next';
 import { useAuth } from '@/context/AuthContext';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
@@ -57,22 +54,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const router = useRouter()
-
-  useEffect(() => {
-    const token = localStorage.getItem('token')
-    setIsLoggedIn(!!token)
-  }, [])
-
-  const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    setIsLoggedIn(false)
-    router.push('/login')
-  }
-
 
   return (
     <html lang="en">
