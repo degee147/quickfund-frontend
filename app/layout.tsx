@@ -1,51 +1,97 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import Link from "next/link";
-import "./globals.css";
+'use client'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { AuthProvider } from '@/context/AuthContext';
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
 });
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: "Quick Fund",
-  description: "A Scalable Micro-Lending Platform with Smart Scoring & Payment Integration ",
-};
+// export const metadata: Metadata = {
+//   title: 'Quick Fund',
+//   description: 'A Scalable Micro-Lending Platform with Smart Scoring & Payment Integration',
+// };
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+    setIsLoggedIn(!!token)
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+    setIsLoggedIn(false)
+    router.push('/login')
+  }
+
+
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <header className="bg-white shadow p-4">
-          <div className="container mx-auto flex justify-between items-center">
-            <h1 className="text-xl font-bold text-blue-600">QuickFund</h1>
-            <nav className="space-x-4">
-              <Link href="/" className="text-sm text-gray-700 hover:text-blue-500">Home</Link>
-              <Link href="/about" className="text-sm text-gray-700 hover:text-blue-500">About</Link>
-              <Link href="/faqs" className="text-sm text-gray-700 hover:text-blue-500">FAQs</Link>
-              <Link href="/login" className="text-sm text-gray-700 hover:text-blue-500">Login</Link>
-            </nav>
-          </div>
-        </header>
-        {/* {children} */}
-        <main className="flex-1 container mx-auto p-4">{children}</main>
+        <AuthProvider>
+          <header className="bg-white shadow p-4">
+            <div className="container mx-auto flex justify-between items-center">
+              <h1 className="text-xl font-bold text-blue-600">QuickFund</h1>
+              <nav className="space-x-4">
+                <Link href="/" className="text-sm text-gray-700 hover:text-blue-500">
+                  Home
+                </Link>
+                <Link href="/about" className="text-sm text-gray-700 hover:text-blue-500">
+                  About
+                </Link>
+                <Link href="/faqs" className="text-sm text-gray-700 hover:text-blue-500">
+                  FAQs
+                </Link>
 
-        <footer className="bg-gray-100 text-center py-4 text-sm text-gray-500">
-          &copy; {new Date().getFullYear()} QuickFund. All rights reserved.
-        </footer>
+                {isLoggedIn ? (
+                  <>
+                    <Link href="/dashboard" className="text-sm text-gray-700 hover:text-blue-500">
+                      Dashboard
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="text-sm text-gray-700 hover:text-red-500"
+                    >
+                      Logout
+                    </button>
+                  </>
+                ) : (
+                  <Link href="/login" className="text-sm text-gray-700 hover:text-blue-500">
+                    Login
+                  </Link>
+                )}
+              </nav>
+            </div>
+          </header>
+
+          <main className="flex-1 container mx-auto p-4">{children}</main>
+
+          <footer className="bg-gray-100 text-center py-4 text-sm text-gray-500">
+            &copy; {new Date().getFullYear()} QuickFund. All rights reserved.
+          </footer>
+        </AuthProvider>
       </body>
-    </html >
+    </html>
   );
 }
