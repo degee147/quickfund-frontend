@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import FormCard from '@/components/ui/FormCard';
 import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
+import { useAuth } from '@/context/AuthContext';
 
 const loginSchema = z.object({
     email: z.string().email('Invalid email address'),
@@ -15,17 +16,23 @@ const loginSchema = z.object({
 type LoginForm = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
+    const { login } = useAuth();
+
     const {
         register,
         handleSubmit,
-        formState: { errors },
+        formState: { errors, isSubmitting },
     } = useForm<LoginForm>({
         resolver: zodResolver(loginSchema),
     });
 
     const onSubmit = async (data: LoginForm) => {
-        // TODO: POST to Laravel login API, get token
-        console.log('Logging in:', data);
+        try {
+            await login(data); // delegates to AuthContext
+        } catch (error: any) {
+            console.error('Login failed:', error);
+            alert(error?.response?.data?.message || 'Login failed. Please try again.');
+        }
     };
 
     return (
@@ -54,7 +61,9 @@ export default function LoginPage() {
                         <p className="text-sm text-red-600 mt-1">{errors.password.message}</p>
                     )}
                 </div>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? 'Logging in...' : 'Login'}
+                </Button>
             </form>
             <p className="text-center text-sm mt-4">
                 New user?{' '}
